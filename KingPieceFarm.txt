@@ -5,7 +5,7 @@ wait(4)
 
 game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
     if State == Enum.TeleportState.Started then
-        syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/CrimsonicDemon/Scripts/main/KingPieceFarm.txt', true))()")
+        syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/CrimsonicDemon/Scripts/main/KingPieceFarm.txt")
     end
 end)
 
@@ -17,7 +17,7 @@ for i, Thing in ipairs(Things) do
         local ThingDescendants = Thing:GetDescendants()
         for i, Child in ipairs(ThingDescendants) do
             if Child:IsA("Part") or Child:IsA("MeshPart") then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.Position = Child.Position
+                game.Players.LocalPlayer.Character.HumanoidRootPart.Position = Child.Position * Vector3.new(4, 4, 4)
                 print("FRUIT FOUND!!!")
                 Found = true
                 break
