@@ -1,7 +1,7 @@
 
 print("Started")
 
-wait(2)
+wait(4)
 
 game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
     if State == Enum.TeleportState.Started then
