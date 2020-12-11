@@ -1,0 +1,15 @@
+game.Players.LocalPlayer.OnTeleport:connect(function()
+<void> syn.queue_on_teleport("")
+)
+local Potential = {}
+local HttpService = game:GetService("HttpService")
+for I,V in ipairs(HttpService:JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
+    if type(V) == "table" and V.maxPlayers > V.playing and V.id ~= game.JobId then
+        table.insert(Potential, V.id)
+    end
+end
+if #Potential > 0 then
+    game:GetService("TeleportService"):TeleportToPlaceInstance(game.PlaceId, Potential[math.random(1, #Potential)])
+else
+    error("No Server Found")      
+end
