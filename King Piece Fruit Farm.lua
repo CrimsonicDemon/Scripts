@@ -1,9 +1,11 @@
+
 print("Started")
+
+wait()
 
 game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
     if State == Enum.TeleportState.Started then
-        syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/CrimsonicDemon/Scripts/main/King%20Piece%20Fruit%20Farm.lua', true))()
-")
+        syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/CrimsonicDemon/Scripts/main/King%20Piece%20Fruit%20Farm.lua', true))()")
     end
 end)
 
