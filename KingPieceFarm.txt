@@ -1,6 +1,13 @@
 
 print("Started")
 
+local player = game.Players.LocalPlayer
+
+repeat wait() until player.Character
+
+local character = player.Character
+local torso = character:WaitForChild("Torso")
+
 repeat wait() until game.ContentProvider.RequestQueueSize > 0
 
 game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
