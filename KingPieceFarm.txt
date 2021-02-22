@@ -1,6 +1,8 @@
 
 print("Started")
 
+repeat wait() until game.Players.LocalPlayer
+
 local player = game.Players.LocalPlayer
 
 repeat wait() until player.Character
@@ -10,7 +12,7 @@ local torso = character:WaitForChild("HumanoidRootPart")
 
 game:GetService("Players").LocalPlayer.OnTeleport:Connect(function(State)
     if State == Enum.TeleportState.Started then
-        syn.queue_on_teleport("loadstring(game:HttpGet('https://raw.githubusercontent.com/CrimsonicDemon/Scripts/main/KingPieceFarm.txt")
+        syn.queue_on_teleport("loadstring(game:HttpGet(('https://raw.githubusercontent.com/CrimsonicDemon/Scripts/main/KingPieceFarm.txt')))()")
     end
 end)
 
