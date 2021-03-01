@@ -23,7 +23,7 @@ for i, Thing in ipairs(Things) do
         local ThingDescendants = Thing:GetDescendants()
         for i, Child in ipairs(ThingDescendants) do
             if Child:IsA("Part") or Child:IsA("MeshPart") then
-                game.Players.LocalPlayer.Character.HumanoidRootPart.Position = Child.Position * Vector3.new(4, 4, 4)
+                game.Players.LocalPlayer.Character.HumanoidRootPart.CFrame = Child.CFrame * CFrame.new(4, 4, 4)
                 print("FRUIT FOUND!!!")
                 Found = true
                 break
@@ -53,6 +53,8 @@ mouse.KeyDown:connect(function(key)
         end
     end
 end)
+
+print("Here")
 
 if Found == false then 
     while wait(5) do
