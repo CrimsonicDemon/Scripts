@@ -37,7 +37,7 @@ local mouse = player:GetMouse()
 
 mouse.KeyDown:connect(function(key)
     if key:lower() == "e" or key:upper() == "E" then
-        while wait() do
+        while wait(5) do
             local Potential = {}
             local HttpService = game:GetService("HttpService")
             for I,V in ipairs(HttpService:JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
@@ -55,7 +55,7 @@ mouse.KeyDown:connect(function(key)
 end)
 
 if Found == false then 
-    while wait() do
+    while wait(5) do
         local Potential = {}
         local HttpService = game:GetService("HttpService")
         for I,V in ipairs(HttpService:JSONDecode(game:HttpGetAsync("https://games.roblox.com/v1/games/" .. game.PlaceId .. "/servers/Public?sortOrder=Asc&limit=100")).data) do
