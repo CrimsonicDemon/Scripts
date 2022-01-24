@@ -1,0 +1,134 @@
+if _G.AutoReroll ~= nil then return end
+_G.AutoReroll = false
+
+local Reaper2GUI = Instance.new("ScreenGui")
+local Frame = Instance.new("Frame")
+local Background = Instance.new("Frame")
+local UICorner = Instance.new("UICorner")
+local SecondFrame = Instance.new("Frame")
+local TextButton = Instance.new("TextButton")
+local UICorner_2 = Instance.new("UICorner")
+local Frame_2 = Instance.new("Frame")
+local UICorner_3 = Instance.new("UICorner")
+local TextBox = Instance.new("TextBox")
+
+Reaper2GUI.Name = "Reaper2GUI"
+Reaper2GUI.Parent = game.CoreGui
+
+Frame.Parent = Reaper2GUI
+Frame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame.BackgroundTransparency = 1.000
+Frame.Position = UDim2.new(0.0399999991, 0, 0.511013448, 0)
+Frame.Size = UDim2.new(0, 166, 0, 125)
+
+Background.Name = "Background"
+Background.Parent = Frame
+Background.AnchorPoint = Vector2.new(0.5, 0.5)
+Background.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+Background.Position = UDim2.new(0.5, 0, 0.5, 0)
+Background.Size = UDim2.new(1, 0, 1, 0)
+
+UICorner.CornerRadius = UDim.new(0.0500000007, 0)
+UICorner.Parent = Background
+
+SecondFrame.Name = "Second Frame"
+SecondFrame.Parent = Frame
+SecondFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+SecondFrame.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+SecondFrame.BackgroundTransparency = 1.000
+SecondFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+SecondFrame.Size = UDim2.new(0.920000017, 0, 0.899999976, 0)
+
+TextButton.Parent = SecondFrame
+TextButton.AnchorPoint = Vector2.new(0.5, 1)
+TextButton.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextButton.Position = UDim2.new(0.5, 0, 1, 0)
+TextButton.Size = UDim2.new(1, 0, 0.330000013, 0)
+TextButton.Font = Enum.Font.Ubuntu
+TextButton.Text = "Activate/Deactivate"
+TextButton.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextButton.TextSize = 16
+
+UICorner_2.CornerRadius = UDim.new(0.0700000003, 0)
+UICorner_2.Parent = TextButton
+
+Frame_2.Parent = SecondFrame
+Frame_2.AnchorPoint = Vector2.new(0.5, 0)
+Frame_2.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+Frame_2.Position = UDim2.new(0.5, 0, 0, 0)
+Frame_2.Size = UDim2.new(1, 0, 0.605000019, 0)
+
+UICorner_3.CornerRadius = UDim.new(0.0500000007, 0)
+UICorner_3.Parent = Frame_2
+
+TextBox.Parent = Frame_2
+TextBox.AnchorPoint = Vector2.new(0.5, 0.5)
+TextBox.BackgroundColor3 = Color3.fromRGB(255, 255, 255)
+TextBox.BackgroundTransparency = 1.000
+TextBox.Position = UDim2.new(0.5, 0, 0.5, 0)
+TextBox.Size = UDim2.new(0.949999988, 0, 0.899999976, 0)
+TextBox.Font = Enum.Font.Ubuntu
+TextBox.PlaceholderText = "INSERT WANTED SECONDARIES ( Seperate with commas)"
+TextBox.Text = ""
+TextBox.TextColor3 = Color3.fromRGB(0, 0, 0)
+TextBox.TextScaled = true
+TextBox.TextSize = 20.000
+TextBox.TextWrapped = true
+
+local function GetDATA()
+    local HTTPService = game:GetService("HttpService")
+    local Data = "Weapons"
+    local DataValue = game:GetService("ReplicatedStorage").Remotes.ReturnData:InvokeServer(Data)
+    local Table = HTTPService:JSONDecode(DataValue)
+    local Secondary = Table["Secondary"]
+    Cash = tonumber(game:GetService("ReplicatedStorage").Remotes.ReturnData:InvokeServer("Cash"))
+    return(Secondary)
+end
+
+local CurrentSecondary = GetDATA()
+local Cash = tonumber(game:GetService("ReplicatedStorage").Remotes.ReturnData:InvokeServer("Cash"))
+
+game.Players.LocalPlayer.CharacterAdded:Connect(function()
+    wait(1.5)
+    CurrentSecondary = GetDATA()
+end)
+
+TextButton.MouseButton1Click:Connect(function()
+    if _G.AutoReroll == false and Cash >= 5000 and TextBox.Text ~= "" then
+        _G.AutoReroll = true
+        while _G.AutoReroll == true do
+            local IsTarget = false
+            local TargetText = TextBox.Text:gsub(" ", "")
+            local TargetText = string.lower(TargetText)
+            local TargetSecondaries = TargetText:split(",")
+            for _, Secondary in ipairs(TargetSecondaries) do
+                if string.lower(CurrentSecondary):match(Secondary) then
+                    IsTarget = true
+                    print("Obtained Target")
+                    local OldTarget = TextBox.Text
+                    TextBox.Text = 'Obtained wanted secondary!!'
+                    for count = 1,10 do
+                        Frame_2.BackgroundColor3 = Color3.fromRGB(200, 255, 200)
+                        wait(0.25)
+                        Frame_2.BackgroundColor3 = Color3.fromRGB(200, 255, 200)
+                        wait(0.25)
+                    end
+                    TextBox.Text = OldTarget
+                    break
+                end
+            end
+            if IsTarget == true or Cash < 5000 then
+                _G.AutoReroll = false
+            else
+                game:GetService("ReplicatedStorage").Remotes.Purchase:FireServer("Roll Secondary")
+            end
+            game.Players.LocalPlayer.CharacterAdded:Wait()
+            wait(1.75)
+            print("Rolled "..CurrentSecondary)
+        end
+    else
+        _G.AutoReroll = false
+    end
+end)
+
+
