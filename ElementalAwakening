@@ -1,0 +1,71 @@
+
+if not getgenv().on then getgenv().on = true else getgenv().on = false end
+if not getgenv().WantedRarities then getgenv().WantedRarities = {"Heavenly", "Legendary"} end
+if not getgenv().spincount then getgenv().spincount = 0 end
+if not getgenv().WantedElements then getgenv().WantedElements = {} end
+
+local End = false
+local Spins = game.ReplicatedStorage.Data[game.Players.LocalPlayer.UserId].Spins
+
+local AutoSpawn = game.Players.LocalPlayer.PlayerGui.ChildAdded:Connect(function(Child)
+    if Child.Name == 'ScreenGui' then
+        wait()
+        Child:Destroy()
+        game.Workspace.Camera.CameraType = Enum.CameraType.Custom
+        game.Workspace.Camera.CameraSubject = game.Players.LocalPlayer.Character
+    end
+end)
+
+if game.Players.LocalPlayer.PlayerGui:FindFirstChild("ScreenGui") and game.Players.LocalPlayer.PlayerGui.ScreenGui:FindFirstChild("Start") then
+    game.Players.LocalPlayer.PlayerGui:FindFirstChild("ScreenGui"):Destroy()
+    game.Workspace.Camera.CameraType = Enum.CameraType.Custom
+    game.Workspace.Camera.CameraSubject = game.Players.LocalPlayer.Character
+    game:GetService("ReplicatedStorage").Events.Spawn:InvokeServer()
+end
+
+print("\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n\n")
+
+while wait() and getgenv().on == true do
+    repeat
+        for _, Tool in ipairs(game.Players.LocalPlayer.Backpack:GetChildren()) do
+            wait(0.01)
+            Tool.Parent = game.Players.LocalPlayer.Character
+            wait(0.01)
+            game.ReplicatedStorage.Events.SpellCast:FireServer({Tool, Vector3.new(0,0,0), Vector3.new(0,0,0), true})
+            game.ReplicatedStorage.Events.SpellCast:FireServer({Tool, Vector3.new(0,0,0)})
+            wait(0.01)
+            Tool.Parent = game.Players.LocalPlayer.Backpack
+            wait(0.01)
+        end
+    until Spins.Value > 0 or game.Players.LocalPlayer.Character.Humanoid.Health == 0
+    repeat 
+        wait()
+        local Spun, Rarity = game.ReplicatedStorage.Events.Spin:InvokeServer(false)
+        if Spun == nil then break end
+        getgenv().SpinCount = getgenv().SpinCount + 1
+        print("Rolled: "..Spun.." ("..Rarity..") Spin Number: "..getgenv().SpinCount)
+        for _, ElementHere in ipairs(getgenv().WantedElements) do
+            if Spun == ElementHere  then
+                End = true
+                getgenv().on = false
+                break
+            end
+        end
+        if End == true then break end
+        for _, RarityHere in ipairs(getgenv().WantedRarities) do
+            if Rarity == RarityHere  then
+                End = true
+                getgenv().on = false
+                break
+            end
+        end
+    until Spins.Value == 0 or End == true
+    if game.Players.LocalPlayer.Character.Humanoid.Health > 0 then
+        game.Players.LocalPlayer.Character:BreakJoints()
+    end
+    game:GetService("ReplicatedStorage").Events.Spawn:InvokeServer()
+end
+
+
+
+AutoSpawn:Disconnect()
