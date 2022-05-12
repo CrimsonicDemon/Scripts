@@ -42,8 +42,8 @@ while wait() and getgenv().on == true do
         wait()
         local Spun, Rarity = game.ReplicatedStorage.Events.Spin:InvokeServer(false)
         if Spun == nil then break end
-        getgenv().SpinCount = getgenv().SpinCount + 1
-        print("Rolled: "..Spun.." ("..Rarity..") Spin Number: "..getgenv().SpinCount)
+        getgenv().spincount = getgenv().spincount + 1
+        print("Rolled: "..Spun.." ("..Rarity..") Spin Number: "..getgenv().spincount)
         for _, ElementHere in ipairs(getgenv().WantedElements) do
             if Spun == ElementHere  then
                 End = true
