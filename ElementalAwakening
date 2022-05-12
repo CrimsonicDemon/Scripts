@@ -1,8 +1,8 @@
 
 if not getgenv().on then getgenv().on = true else getgenv().on = false end
-if not getgenv().WantedRarities then getgenv().WantedRarities = {"Heavenly", "Legendary"} end
+if not getgenv().WantedRarities or getgenv().WantedRarities = {} then getgenv().WantedRarities = {"Heavenly", "Legendary"} end
 if not getgenv().spincount then getgenv().spincount = 0 end
-if not getgenv().WantedElements then getgenv().WantedElements = {} end
+if not getgenv().WantedElements or getgenv().WantedElements = {} then getgenv().WantedElements = {} end
 
 local End = false
 local Spins = game.ReplicatedStorage.Data[game.Players.LocalPlayer.UserId].Spins
